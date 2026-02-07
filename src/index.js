@@ -91,13 +91,13 @@ const HTML_CONTENT = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRH Calendar Enhancer</title>
+    <title>Calendar Subscription Enhancer</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📅 SRH Calendar Enhancer</h1>
+            <h1>📅 Calendar Subscription Enhancer</h1>
             <p class="subtitle">Cleaner Calendar - Privacy - Map Friendly</p>
         </header>
         <main>
@@ -138,8 +138,8 @@ const HTML_CONTENT = `<!DOCTYPE html>
             <div class="card faq-card">
                 <h2>💬 Q&A</h2>
                 <details>
-                    <summary>What's the benefit of Calendar Enhancer?</summary>
-                    <p>Calendar Enhancer transforms your basic SRH calendar into a premium experience: <strong>GPS coordinates</strong> for one-tap navigation to campus locations, <strong>clean formatting</strong> by removing unnecessary redundant information, <strong>privacy protection</strong> by stripping personal information, and <strong>zero-knowledge encryption</strong> so your calendar URL stays private. All while maintaining full compatibility with your favorite calendar apps.</p>
+                    <summary>What's the benefit of Calendar Subscription Enhancer?</summary>
+                    <p>Calendar Subscription Enhancer transforms your basic SRH calendar into a premium experience: <strong>GPS coordinates</strong> for one-tap navigation to campus locations, <strong>clean formatting</strong> by removing unnecessary redundant information, <strong>privacy protection</strong> by stripping personal information, and <strong>zero-knowledge encryption</strong> so your calendar URL stays private. All while maintaining full compatibility with your favorite calendar apps.</p>
                 </details>
                 <details>
                     <summary>How secure is my calendar data?</summary>

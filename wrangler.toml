@@ -1,4 +1,4 @@
-name = "srh-calendar-enhancer"
+name = "calendar-subscription-enhancer"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 

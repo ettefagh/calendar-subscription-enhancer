@@ -1,4 +1,4 @@
-# 📅 SRH Calendar Enhancer
+# 📅 Calendar Subscription Enhancer
 
 **Clean Calendar - Privacy - Map Friendly**
 
