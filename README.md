@@ -9,12 +9,16 @@ A Cloudflare Worker that acts as a privacy-preserving "Stealth Proxy" for SRH Un
 ## ✨ Features
 
 -   **🔒 Zero-Knowledge Privacy**: Your original calendar URL is encrypted (AES-GCM 256-bit) into a secure token. The server decrypts it in memory, fetches your data, and forgets it immediately. No logging.
+
 -   **🗺️ Map Friendly**: Automatically injects Apple Maps compatible GPS coordinates for Campus locations (CUBE, SHED, etc.). Addresses are now clickable in iOS/macOS Calendar!
+
 -   **📅 One-Click Subscribe**: Dedicated button to instantly open your native calendar app (`webcal://`).
+
 -   **🧹 strict Hygiene**:
     -   Removes cluttered emojis from titles.
     -   Formats course IDs and entrance notes clearly.
     -   Strips PII (Attendees/Organizers) for privacy.
+
 -   **🚀 Fast & Secure**: Runs on Cloudflare Edge with streaming processing.
 
 ## 🚀 Quick Start
