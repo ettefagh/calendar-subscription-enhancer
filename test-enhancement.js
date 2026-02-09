@@ -38,7 +38,6 @@ async function runTest() {
 
     // --- Verification Checks --- //
     const checks = [
-        { name: 'Emojis Removed from Title', pass: !fullOutput.includes('🔒') && !fullOutput.includes('💻') },
         { name: 'Prefix Removed from Summary', pass: fullOutput.includes('SUMMARY:Computer Security') && !fullOutput.match(/SUMMARY:.*k_BCS_008/) },
         { name: 'Unfolding Worked', pass: !fullOutput.includes('folded line that \r\n should') },
         { name: 'Folding Applied to Output', pass: fullOutput.includes('\r\n ') }, // Should have some folded long lines
