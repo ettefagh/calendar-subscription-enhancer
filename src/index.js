@@ -162,6 +162,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         </main>
         <footer>
             <p>Made with ❤️ for SRH Students | <small>Zero-Knowledge Encryption</small></p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;"><a href="https://github.com/h-ettefagh/srh-calendar-enhancer" target="_blank" style="color: inherit; text-decoration: none; opacity: 0.8;">View on GitHub</a></p>
         </footer>
     </div>
     <script src="/app.js"></script>
