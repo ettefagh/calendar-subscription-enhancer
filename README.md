@@ -32,8 +32,8 @@ A Cloudflare Worker that acts as a privacy-preserving "Stealth Proxy" for SRH Un
 ### Installation
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/h-ettefagh/srh-calendar-enhancer.git
-    cd srh-calendar-enhancer
+    git clone https://github.com/ettefagh/calendar-subscription-enhancer.git
+    cd calendar-subscription-enhancer
     ```
 2.  Install dependencies:
     ```bash
