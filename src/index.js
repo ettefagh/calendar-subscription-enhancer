@@ -171,52 +171,95 @@ const HTML_CONTENT = `<!DOCTYPE html>
 
 export default {
     async fetch(request, env, ctx) {
-        const url = new URL(request.url);
-        // CRITICAL: Ensure SECRET_KEY is set in production via `wrangler secret put`.
-        // The fallback below is for LOCAL DEVELOPMENT ONLY.
-        const SECRET = env.SECRET_KEY || 'dev-secret-do-not-use-in-prod-change-me';
-
-        // 1. Static Assets
-        if (url.pathname === '/' || url.pathname === '/index.html') {
-            return new Response(HTML_CONTENT, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
-        }
-        if (url.pathname === '/styles.css') return handleStyles();
-        if (url.pathname === '/app.js') return handleAppJS();
-
-        // 2. API: Generate
-        if (url.pathname === '/api/generate') {
-            const target = url.searchParams.get('url');
-            if (!target) return jsonResponse({ error: 'Missing URL' }, 400);
-            try {
-                validateRequestUrl(target);
-                const token = await encrypt(target, SECRET);
-                return jsonResponse({ enhancedUrl: `${url.origin}/view/${token}/calendar.ics` });
-            } catch (e) {
-                return jsonResponse({ error: e.message }, 400);
-            }
-        }
-
-        // 3. API: View/Subscribe
-        const pathParts = url.pathname.split('/');
-        if (pathParts[1] === 'view' && pathParts[2]) {
-            const token = pathParts[2];
-            try {
-                const targetUrlStr = await decrypt(token, SECRET);
-                return await handleSubscribe(request, targetUrlStr);
-            } catch (e) {
-                return new Response('Not Found', { status: 404 });
-            }
-        }
-
-        // 4. Legacy Support
-        if (url.pathname === '/subscribe') {
-            const target = url.searchParams.get('url');
-            if (target) return await handleSubscribe(request, target);
-        }
-
-        return new Response('Not Found', { status: 404 });
+        const response = await handleRequest(request, env, ctx);
+        return applySecurityHeaders(response);
     }
 };
+
+async function handleRequest(request, env, ctx) {
+    const url = new URL(request.url);
+    // CRITICAL: Ensure SECRET_KEY is set in production via `wrangler secret put`.
+    // The fallback below is for LOCAL DEVELOPMENT ONLY.
+    const SECRET = env.SECRET_KEY || 'dev-secret-do-not-use-in-prod-change-me';
+
+    // 1. Static Assets
+    if (url.pathname === '/' || url.pathname === '/index.html') {
+        return new Response(HTML_CONTENT, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    }
+    if (url.pathname === '/styles.css') return handleStyles();
+    if (url.pathname === '/app.js') return handleAppJS();
+
+    // 2. API: Generate
+    if (url.pathname === '/api/generate') {
+        const target = url.searchParams.get('url');
+        if (!target) return jsonResponse({ error: 'Missing URL' }, 400);
+        try {
+            validateRequestUrl(target);
+            const token = await encrypt(target, SECRET);
+            return jsonResponse({ enhancedUrl: `${url.origin}/view/${token}/calendar.ics` });
+        } catch (e) {
+            return jsonResponse({ error: e.message }, 400);
+        }
+    }
+
+    // 3. API: View/Subscribe
+    const pathParts = url.pathname.split('/');
+    if (pathParts[1] === 'view' && pathParts[2]) {
+        const token = pathParts[2];
+        try {
+            const targetUrlStr = await decrypt(token, SECRET);
+            return await handleSubscribe(request, targetUrlStr);
+        } catch (e) {
+            return new Response('Not Found', { status: 404 });
+        }
+    }
+
+    // 4. Legacy Support
+    if (url.pathname === '/subscribe') {
+        const target = url.searchParams.get('url');
+        if (target) return await handleSubscribe(request, target);
+    }
+
+    return new Response('Not Found', { status: 404 });
+}
+
+function applySecurityHeaders(response) {
+    const newHeaders = new Headers(response.headers);
+    
+    // HSTS: Enforce HTTPS for 2 years
+    newHeaders.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+    
+    // CSP: Default deny, allow specific sources
+    newHeaders.set('Content-Security-Policy', 
+        "default-src 'none'; " +
+        "script-src 'self' 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src https://fonts.gstatic.com; " +
+        "img-src 'self' data:; " +
+        "connect-src 'self'; " +
+        "frame-ancestors 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self';"
+    );
+    
+    // Anti-sniffing
+    newHeaders.set('X-Content-Type-Options', 'nosniff');
+    
+    // Deny iframes
+    newHeaders.set('X-Frame-Options', 'DENY');
+    
+    // Referrer Policy
+    newHeaders.set('Referrer-Policy', 'no-referrer');
+    
+    // Permissions Policy (Camera/Mic/Geo not needed)
+    newHeaders.set('Permissions-Policy', 'geolocation=(), camera=(), microphone=(), payment=()');
+
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders
+    });
+}
 
 async function handleSubscribe(request, targetUrlStr) {
     if (request.method !== 'GET') return new Response('Method Not Allowed', { status: 405 });
