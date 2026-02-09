@@ -4,9 +4,9 @@
 
 A Cloudflare Worker that acts as a privacy-preserving "Stealth Proxy" for SRH University calendar feeds. It upgrades the standard iCal feed with useful features while keeping your data private.
 
+[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ettefagh/calendar-subscription-enhancer)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Built with AI](https://img.shields.io/badge/Built%20With-AI%20%2B%20Human-purple)
-[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ettefagh/calendar-subscription-enhancer)
 
 ## ✨ Features
 
