@@ -7,6 +7,7 @@ A Cloudflare Worker that acts as a privacy-preserving "Stealth Proxy" for SRH Un
 [![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ettefagh/calendar-subscription-enhancer)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Built with AI](https://img.shields.io/badge/Built%20With-AI%20%2B%20Human-purple)
+[![CodSpeed](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/ettefagh/calendar-subscription-enhancer?utm_source=badge)
 
 ## ✨ Features
 
