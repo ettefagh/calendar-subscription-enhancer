@@ -1,6 +1,9 @@
 node_modules
 .wrangler
+.wrangler-config
 .env
 .DS_Store
 dist
 public/_worker.js
+Documents/
+Tests/

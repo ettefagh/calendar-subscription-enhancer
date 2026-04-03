@@ -98,7 +98,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
     <div class="container">
         <header>
             <h1>📅 Calendar Subscription Enhancer</h1>
-            <p class="subtitle">Cleaner Calendar - Privacy - Map Friendly</p>
+            <p class="subtitle">Clean Class Schedule - Map Friendly - Data Privacy</p>
         </header>
         <main>
             <div class="card">
@@ -225,12 +225,12 @@ async function handleRequest(request, env, ctx) {
 
 function applySecurityHeaders(response) {
     const newHeaders = new Headers(response.headers);
-    
+
     // HSTS: Enforce HTTPS for 2 years
     newHeaders.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-    
+
     // CSP: Default deny, allow specific sources
-    newHeaders.set('Content-Security-Policy', 
+    newHeaders.set('Content-Security-Policy',
         "default-src 'none'; " +
         "script-src 'self' 'unsafe-inline'; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
@@ -241,16 +241,16 @@ function applySecurityHeaders(response) {
         "base-uri 'self'; " +
         "form-action 'self';"
     );
-    
+
     // Anti-sniffing
     newHeaders.set('X-Content-Type-Options', 'nosniff');
-    
+
     // Deny iframes
     newHeaders.set('X-Frame-Options', 'DENY');
-    
+
     // Referrer Policy
     newHeaders.set('Referrer-Policy', 'no-referrer');
-    
+
     // Permissions Policy (Camera/Mic/Geo not needed)
     newHeaders.set('Permissions-Policy', 'geolocation=(), camera=(), microphone=(), payment=()');
 
@@ -346,7 +346,7 @@ function handleStyles() {
         padding: 2rem;
     }
 
-    .container { max-width: 600px; width: 100%; z-index: 1; }
+    .container { max-width: 600px; width: 100%; z-index: 1; margin-top: 25%; }
 
     h1 {
         font-weight: 700;

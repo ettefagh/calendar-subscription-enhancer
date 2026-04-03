@@ -5,8 +5,8 @@
     "description": "Enhance SRH student calendar subscriptions with better addresses and titles",
     "main": "src/index.js",
     "scripts": {
-        "dev": "wrangler dev",
-        "deploy": "wrangler deploy",
+        "dev": "npx wrangler@latest dev",
+        "deploy": "npx wrangler@latest deploy",
         "test": "node test-enhancement.js"
     },
     "keywords": [
