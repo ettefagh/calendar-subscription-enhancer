@@ -171,6 +171,14 @@ const HTML_CONTENT = `<!DOCTYPE html>
 
 export default {
     async fetch(request, env, ctx) {
+        if (request.method === 'OPTIONS') {
+            const corsHeaders = {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
+            };
+            return new Response(null, { headers: corsHeaders });
+        }
         const response = await handleRequest(request, env, ctx);
         return applySecurityHeaders(response);
     }
@@ -314,9 +322,14 @@ async function handleSubscribe(request, targetUrlStr) {
 }
 
 function jsonResponse(data, status = 200) {
+    const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+    };
     return new Response(JSON.stringify(data), {
         status,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 }
 
