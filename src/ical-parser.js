@@ -13,6 +13,13 @@ const CAMPUS_DATA = {
         plusCode: 'GCR9+7H7',
         notes: ''
     },
+    'HALL': {
+        name: 'HALL',
+        address: 'Sonnenallee 221B, 12059 Berlin',
+        coords: '52.475064, 13.457422',
+        plusCode: 'FFG4+2XF',
+        notes: ''
+    },
     'A': { name: 'SHED', address: 'Sonnenallee 221C, 12059 Berlin', coords: '52.4758038,13.4549394', plusCode: 'GCC5+QW', notes: '' },
     'B': { name: 'SHED', address: 'Sonnenallee 221C, 12059 Berlin', coords: '52.4758038,13.4549394', plusCode: 'GCC5+QW', notes: '' },
     'C': { name: 'SHED', address: 'Sonnenallee 221D, 12059 Berlin', coords: '52.4760266,13.4549741', plusCode: 'GCC5+RX', notes: '' },
@@ -45,10 +52,6 @@ const CAMPUS_DATA = {
 
 // --- Utilities --- //
 
-function removeEmojis(text) {
-    if (!text) return text;
-    return text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}]/gu, '');
-}
 
 /**
  * RFC 5545 Compliance: Split lines at 75 octets (bytes), not characters.
@@ -82,8 +85,7 @@ function foldLine(line) {
 
 function normalizeTitle(summary) {
     if (!summary) return summary;
-    let clean = removeEmojis(summary);
-    clean = clean.replace(/^k_[A-Z0-9_]+\s*-\s*/i, '').trim();
+    let clean = summary.replace(/^k_[A-Z0-9_]+\s*-\s*/i, '').trim();
     const words = clean.split(/\s+/);
     return [...new Set(words)].join(' ');
 }
@@ -204,8 +206,17 @@ export class ICalLineEnhancer {
         // 1. Determine Title vs Address
         let uiLabel = `${enhancedLoc.room || locationRaw} - ${enhancedLoc.name}`;
         if (enhancedLoc.key === 'CUBE') {
-            const roomNum = (enhancedLoc.room || locationRaw).replace(/CUBE/i, '').trim();
-            uiLabel = `${roomNum} - CUBE`; // Fixed spacing
+            let room = (enhancedLoc.room || locationRaw).replace(/CUBE/i, '').trim();
+            if (room.toUpperCase().startsWith('HALL ')) {
+                uiLabel = room.substring(5).trim() + ' HALL';
+            } else if (room.toUpperCase().startsWith('SEMINAR ')) {
+                uiLabel = room.substring(8).trim() + ' Seminar';
+            } else {
+                uiLabel = `${room} - CUBE`;
+            }
+        } else if (enhancedLoc.key === 'HALL') {
+            let room = (enhancedLoc.room || locationRaw).replace(/HALL/i, '').trim();
+            uiLabel = `${room} HALL`;
         } else if (enhancedLoc.key === 'Online') {
             uiLabel = 'Online';
         }
@@ -251,12 +262,13 @@ export class ICalLineEnhancer {
     resolveLocation(rawLoc) {
         if (!rawLoc || rawLoc.toLowerCase() === 'online') return { key: 'Online', name: 'Online', address: 'Online', coords: '0,0', plusCode: '', notes: '' };
 
-        const roomMatch = rawLoc.match(/([A-D]?\d+\.\d+|CUBE\s+\d+\.\d+|SON\s+\d+\.\d+|Seminar\s+\d+)/i);
+        const roomMatch = rawLoc.match(/((?:[A-D]|CUBE|SON|Seminar|HALL)\s*\d+\.\d+|\d+\.\d+)/i);
         const roomCode = roomMatch ? roomMatch[1] : '';
-
+ 
         let key = 'CUBE';
         if (rawLoc.toUpperCase().includes('KIEHLUFER')) key = 'DEKRA';
         else if (rawLoc.toUpperCase().includes('THIEMANN')) key = 'CN';
+        else if (rawLoc.toUpperCase().includes('HALL')) key = 'HALL';
         else if (rawLoc.includes('223')) key = 'SON223';
         else if (rawLoc.includes('224a')) key = 'SON224A';
         else if (roomCode) {
