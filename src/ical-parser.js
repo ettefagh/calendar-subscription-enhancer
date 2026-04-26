@@ -241,14 +241,14 @@ export class ICalLineEnhancer {
         }
 
         const descParts = [];
-        descParts.push(`🆔 Course ID: ${courseId}`);
+        descParts.push(`Course ID: ${courseId}`);
 
         if (enhancedLoc.notes) {
             descParts.push(enhancedLoc.notes);
         }
 
-        descParts.push('--------------------------');
-        descParts.push(`🗺️ Original: ${locationRaw}`);
+
+        descParts.push(`Original Location: ${locationRaw}`);
 
         event.push(`DESCRIPTION:${descParts.join('\\n')}`);
 
@@ -262,7 +262,7 @@ export class ICalLineEnhancer {
     resolveLocation(rawLoc) {
         if (!rawLoc || rawLoc.toLowerCase() === 'online') return { key: 'Online', name: 'Online', address: 'Online', coords: '0,0', plusCode: '', notes: '' };
 
-        const roomMatch = rawLoc.match(/((?:[A-D]|CUBE|SON|Seminar|HALL)\s*\d+\.\d+|\d+\.\d+)/i);
+        const roomMatch = rawLoc.match(/((?:[A-D]|CUBE|SHED|SON|Seminar|HALL)\s*\d+\.\d+|\d+\.\d+)/i);
         const roomCode = roomMatch ? roomMatch[1] : '';
  
         let key = 'CUBE';
