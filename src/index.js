@@ -245,7 +245,7 @@ function applySecurityHeaders(response) {
         "font-src https://fonts.gstatic.com; " +
         "img-src 'self' data:; " +
         "connect-src 'self'; " +
-        "frame-ancestors 'none'; " +
+        "frame-ancestors 'self' https://srh-community.campusweb.cloud https://campusweb.cloud http://localhost:5173 http://localhost:4173; " +
         "base-uri 'self'; " +
         "form-action 'self';"
     );
@@ -253,8 +253,8 @@ function applySecurityHeaders(response) {
     // Anti-sniffing
     newHeaders.set('X-Content-Type-Options', 'nosniff');
 
-    // Deny iframes
-    newHeaders.set('X-Frame-Options', 'DENY');
+    // Allow framing under CSP frame-ancestors; fallback to SAMEORIGIN for older browsers
+    newHeaders.set('X-Frame-Options', 'SAMEORIGIN');
 
     // Referrer Policy
     newHeaders.set('Referrer-Policy', 'no-referrer');
