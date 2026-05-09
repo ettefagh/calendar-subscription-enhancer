@@ -7,3 +7,4 @@ dist
 public/_worker.js
 Documents/
 Tests/
+graphify-out/
